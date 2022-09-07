@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-service
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/use-regex: 'true'
+  labels:
+    name: myingress
+spec:
+  rules:
+    - host: auth.dev
+      http:
+        paths:
+          - pathType: Prefix
+            path: /api/?(.*)
+            backend:
+              service:
+                name: auth-srv
+                port:
+                  number: 4000
