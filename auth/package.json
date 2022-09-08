@@ -14,6 +14,7 @@
     "@types/express-validator": "^3.0.0",
     "@types/node": "^18.7.14",
     "express": "^4.18.1",
+    "express-async-errors": "^3.1.1",
     "express-validator": "^6.14.2",
     "morgan": "^1.10.0",
     "ts-node": "^10.9.1",

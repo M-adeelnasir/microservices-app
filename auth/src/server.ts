@@ -1,4 +1,5 @@
 import express from 'express';
+import 'express-async-errors';
 import { currentUserRouter } from './routes/currentUser';
 import { signinRouter } from './routes/signin';
 import { signupRouter } from './routes/signup';
@@ -15,9 +16,14 @@ app.use(signinRouter);
 app.use(signupRouter);
 app.use(signoutRouter);
 
-app.get('*', () => {
+app.all('*', async () => {
   throw new NotFoundError();
 });
+
+//without express-async-errors
+// app.all('*', async (req, res, next) => {
+//   next(new NotFoundError());
+// });
 
 app.use(errorHandler);
 app.get('/api/health-check', (req, res) => {
