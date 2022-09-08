@@ -1,3 +1,5 @@
+import { RequestValidationError } from './../errors/reqValidation-error';
+import { DbConnectionError } from '../errors/dbConn-error';
 import { Response, Request, NextFunction, ErrorRequestHandler } from 'express';
 
 function errorHandler(
@@ -6,7 +8,15 @@ function errorHandler(
   res: Response,
   next: NextFunction
 ) {
-  res.send(err.message);
+  if (err instanceof RequestValidationError) {
+    console.log('Request validation errro');
+  }
+  if (err instanceof DbConnectionError) {
+    console.log('DB Error');
+  }
+  res.status(400).json({
+    error: err.message,
+  });
 }
 
 export default errorHandler;
