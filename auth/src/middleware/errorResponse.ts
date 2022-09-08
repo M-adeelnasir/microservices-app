@@ -9,10 +9,13 @@ function errorHandler(
   next: NextFunction
 ) {
   if (err instanceof RequestValidationError) {
-    console.log('Request validation errro');
+    const formatedErrors = err.errors.map((error) => {
+      return { message: error.msg, fields: error.param };
+    });
+    res.status(400).send({ errors: formatedErrors });
   }
   if (err instanceof DbConnectionError) {
-    console.log('DB Error');
+    res.status(500).send({ errors: [{ message: err.reason }] });
   }
   res.status(400).json({
     error: err.message,
