@@ -1,6 +1,6 @@
 import { RequestValidationError } from './../errors/reqValidation-error';
 import { DbConnectionError } from '../errors/dbConn-error';
-import { Response, Request, NextFunction, ErrorRequestHandler } from 'express';
+import { Response, Request, NextFunction } from 'express';
 
 function errorHandler(
   err: Error,
@@ -9,17 +9,14 @@ function errorHandler(
   next: NextFunction
 ) {
   if (err instanceof RequestValidationError) {
-    const formatedErrors = err.errors.map((error) => {
-      return { message: error.msg, fields: error.param };
-    });
-    res.status(400).send({ errors: formatedErrors });
+    res.status(err.statusCode).send({ errors: err.serializeError() });
   }
   if (err instanceof DbConnectionError) {
-    res.status(500).send({ errors: [{ message: err.reason }] });
+    res.status(err.statusCode).send({ errors: err.serializerErrors() });
   }
-  res.status(400).json({
-    error: err.message,
-  });
+  // res.status(400).json({
+  //   error: err.message,
+  // });
 }
 
 export default errorHandler;
