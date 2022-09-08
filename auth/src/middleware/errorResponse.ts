@@ -10,9 +10,6 @@ function errorHandler(
   if (err instanceof CustomError) {
     res.status(err.statusCode).send({ errors: err.serializeErrors() });
   }
-  // res.status(400).json({
-  //   error: err.message,
-  // });
 }
 
 export default errorHandler;

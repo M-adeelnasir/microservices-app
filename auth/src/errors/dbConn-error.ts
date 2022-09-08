@@ -11,7 +11,7 @@ export class DbConnectionError extends CustomError {
   statusCode = 500;
   reason = 'db connection error';
   constructor() {
-    super();
+    super('Databse COnnection error');
     Object.setPrototypeOf(this, DbConnectionError.prototype);
   }
   serializeErrors() {
