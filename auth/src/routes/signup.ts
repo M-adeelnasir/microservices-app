@@ -13,7 +13,7 @@ router.post(
       .isLength({ min: 6 })
       .withMessage('Password is required and must be atleast 6 chars'),
   ],
-  (req: Request, res: Response) => {
+  async (req: Request, res: Response) => {
     const { email, password } = req.body;
     const errors = validationResult(req);
 
