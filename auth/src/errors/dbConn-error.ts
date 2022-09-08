@@ -1,17 +1,20 @@
-interface DbInterface {
-  statusCode: number;
-  serializerErrors(): {
-    message: string;
-  }[];
-}
-export class DbConnectionError extends Error implements DbInterface {
+// interface DbInterface {
+//   statusCode: number;
+//   serializerErrors(): {
+//     message: string;
+//   }[];
+// }
+
+import { CustomError } from './custom-error';
+
+export class DbConnectionError extends CustomError {
   statusCode = 500;
   reason = 'db connection error';
   constructor() {
     super();
     Object.setPrototypeOf(this, DbConnectionError.prototype);
   }
-  serializerErrors() {
+  serializeErrors() {
     return [{ message: this.reason }];
   }
 }
