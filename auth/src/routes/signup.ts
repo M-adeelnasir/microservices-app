@@ -4,6 +4,7 @@ import { RequestValidationError } from '../errors/reqValidation-error';
 import { DbConnectionError } from '../errors/dbConn-error';
 import User from '../models/user-model';
 // import { ErrorMessage } from '../errors/ErrorMessage';
+import jwt from 'jsonwebtoken';
 
 const router = express.Router();
 
@@ -24,7 +25,7 @@ router.post(
       if (!errors.isEmpty()) {
         console.log('not');
 
-        // throw new RequestValidationError(errors.array());
+        throw new RequestValidationError(errors.array());
       }
 
       const user = await User.findOne({ email: email });
@@ -38,8 +39,19 @@ router.post(
 
       const newUser = await User.create({ email, password });
 
+      const jwtToken = await jwt.sign({ email, password }, 'hellothis');
+
+      req.session = {
+        jwt: jwtToken,
+      };
+
       res.status(200).send(newUser);
-    } catch (err) {}
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({
+        err: 'server error ',
+      });
+    }
   }
 );
 

@@ -1,5 +1,6 @@
 import express from 'express';
 import 'express-async-errors';
+import cookieSeesion from 'cookie-session';
 import { currentUserRouter } from './routes/currentUser';
 import { signinRouter } from './routes/signin';
 import { signupRouter } from './routes/signup';
@@ -11,6 +12,15 @@ import connectDB from './services/db';
 const app = express();
 app.use(express.json());
 const PORT = process.env.PORT || 4000;
+
+app.set('trust proxy', true);
+
+app.use(
+  cookieSeesion({
+    signed: false, //encrypt fales
+    secure: true,
+  })
+);
 
 app.use(currentUserRouter);
 app.use(signinRouter);
