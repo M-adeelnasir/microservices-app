@@ -15,6 +15,9 @@ app.use(currentUserRouter);
 app.use(signinRouter);
 app.use(signupRouter);
 app.use(signoutRouter);
+app.get('/api/health-check', (req, res) => {
+  res.sendStatus(200);
+});
 
 app.all('*', async () => {
   throw new NotFoundError();
@@ -26,9 +29,6 @@ app.all('*', async () => {
 // });
 
 app.use(errorHandler);
-app.get('/api/health-check', (req, res) => {
-  res.sendStatus(200);
-});
 
 app.listen(PORT, () => {
   console.log('Server is listening at port 4000!!');
