@@ -2,6 +2,8 @@ import express, { Response, Request } from 'express';
 import { body, validationResult } from 'express-validator';
 import { RequestValidationError } from '../errors/reqValidation-error';
 import { DbConnectionError } from '../errors/dbConn-error';
+import User from '../models/user-model';
+
 const router = express.Router();
 
 router.post(
@@ -14,16 +16,19 @@ router.post(
       .withMessage('Password is required and must be atleast 6 chars'),
   ],
   async (req: Request, res: Response) => {
-    const { email, password } = req.body;
-    const errors = validationResult(req);
+    try {
+      const { email, password } = req.body;
+      const errors = validationResult(req);
 
-    if (!errors.isEmpty()) {
-      throw new RequestValidationError(errors.array());
-    }
+      if (!errors.isEmpty()) {
+        throw new RequestValidationError(errors.array());
+      }
 
-    throw new DbConnectionError();
+      const user = await User.findOne({ email });
 
-    res.send({});
+      if (user) {
+      }
+    } catch (err) {}
   }
 );
 
