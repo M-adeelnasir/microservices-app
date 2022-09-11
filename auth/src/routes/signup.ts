@@ -3,7 +3,7 @@ import { body, validationResult } from 'express-validator';
 import { RequestValidationError } from '../errors/reqValidation-error';
 import { DbConnectionError } from '../errors/dbConn-error';
 import User from '../models/user-model';
-import { ErrorMessage } from '../errors/ErrorMessage';
+// import { ErrorMessage } from '../errors/ErrorMessage';
 
 const router = express.Router();
 
@@ -22,14 +22,18 @@ router.post(
       const errors = validationResult(req);
 
       if (!errors.isEmpty()) {
-        throw new RequestValidationError(errors.array());
+        console.log('not');
+
+        // throw new RequestValidationError(errors.array());
       }
 
-      const user = await User.findOne({ email });
+      const user = await User.findOne({ email: email });
 
       if (user) {
-        throw new ErrorMessage('Email is already taken');
-        return;
+        console.log('erro');
+
+        // throw new ErrorMessage('Email is taken');
+        res.status(400).json([{ message: 'EMail is taken' }]);
       }
 
       const newUser = await User.create({ email, password });

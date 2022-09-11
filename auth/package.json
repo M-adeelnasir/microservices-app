@@ -15,6 +15,7 @@
     "@types/jsonwebtoken": "^8.5.9",
     "@types/mongoose": "^5.11.97",
     "@types/node": "^18.7.14",
+    "cookie-session": "^2.0.0",
     "dotenv": "^16.0.2",
     "express": "^4.18.1",
     "express-async-errors": "^3.1.1",

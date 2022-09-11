@@ -1,3 +1,4 @@
+import { Password } from './../services/password';
 import mongoose from 'mongoose';
 
 export interface UserDocument extends mongoose.Document {
@@ -18,6 +19,15 @@ const userScehma = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+userScehma.pre('save', async function (done) {
+  const user = this as UserDocument;
+  if (!user.isModified('password')) return done();
+
+  const hash = await Password.hashPassword(this.password);
+  user.password = hash;
+  return done();
+});
 
 const User = mongoose.model<UserDocument>('User', userScehma);
 
