@@ -6,6 +6,7 @@ import { signupRouter } from './routes/signup';
 import { signoutRouter } from './routes/signout';
 import errorHandler from './middleware/errorResponse';
 import { NotFoundError } from './errors/notFound-error';
+import connectDB from './services/db';
 
 const app = express();
 app.use(express.json());
@@ -30,6 +31,7 @@ app.all('*', async () => {
 
 app.use(errorHandler);
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log('Server is listening at port 4000!!');
+  await connectDB();
 });
