@@ -40,7 +40,10 @@ router.post(
       throw new ErrorMessage('Invalid Credetials');
     }
 
-    const jwtToken = jwt.sign({ email, password }, process.env.JWT_KEY!);
+    const jwtToken = jwt.sign(
+      { email: user.email, id: user.id },
+      process.env.JWT_KEY!
+    );
 
     req.session! = {
       jwt: jwtToken,

@@ -40,7 +40,10 @@ router.post(
 
     const newUser = await User.create({ email, password });
 
-    const jwtToken = jwt.sign({ email, password }, process.env.JWT_KEY!);
+    const jwtToken = jwt.sign(
+      { email: newUser.email, id: newUser.id },
+      process.env.JWT_KEY!
+    );
 
     req.session = {
       jwt: jwtToken,
