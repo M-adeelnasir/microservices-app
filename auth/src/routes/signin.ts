@@ -1,7 +1,7 @@
 import { Password } from './../services/password';
 import { RequestValidationError } from './../errors/reqValidation-error';
 import { ErrorMessage } from './../errors/ErrorMessage';
-import express, { Response, Request, NextFunction } from 'express';
+import express, { Response, Request } from 'express';
 import { body, validationResult } from 'express-validator';
 import User from '../models/user-model';
 import jwt from 'jsonwebtoken';
