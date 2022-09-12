@@ -3,10 +3,18 @@ import { body, validationResult } from 'express-validator';
 import { RequestValidationError } from '../errors/reqValidation-error';
 import { DbConnectionError } from '../errors/dbConn-error';
 import User from '../models/user-model';
-// import { ErrorMessage } from '../errors/ErrorMessage';
+import { ErrorMessage } from '../errors/ErrorMessage';
 import jwt from 'jsonwebtoken';
 
 const router = express.Router();
+
+declare global {
+  namespace Express {
+    interface Request {
+      session?: any;
+    }
+  }
+}
 
 router.post(
   '/api/users/signup',
@@ -18,40 +26,28 @@ router.post(
       .withMessage('Password is required and must be atleast 6 chars'),
   ],
   async (req: Request, res: Response) => {
-    try {
-      const { email, password } = req.body;
-      const errors = validationResult(req);
+    const { email, password } = req.body;
+    const errors = validationResult(req);
 
-      if (!errors.isEmpty()) {
-        console.log('not');
-
-        throw new RequestValidationError(errors.array());
-      }
-
-      const user = await User.findOne({ email: email });
-
-      if (user) {
-        console.log('erro');
-
-        // throw new ErrorMessage('Email is taken');
-        res.status(400).json([{ message: 'EMail is taken' }]);
-      }
-
-      const newUser = await User.create({ email, password });
-
-      const jwtToken = jwt.sign({ email, password }, 'hellothis');
-
-      req.session = {
-        jwt: jwtToken,
-      };
-
-      res.status(200).send(newUser);
-    } catch (err) {
-      console.log(err);
-      res.status(500).json({
-        err: 'server error ',
-      });
+    if (!errors.isEmpty()) {
+      throw new RequestValidationError(errors.array());
     }
+
+    const user = await User.findOne({ email: email });
+
+    if (user) {
+      throw new ErrorMessage('Email yes is taken');
+    }
+
+    const newUser = await User.create({ email, password });
+
+    const jwtToken = jwt.sign({ email, password }, 'hellothis');
+
+    req.session = {
+      jwt: jwtToken,
+    };
+
+    res.status(200).send(newUser);
   }
 );
 

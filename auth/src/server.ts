@@ -5,7 +5,7 @@ import { currentUserRouter } from './routes/currentUser';
 import { signinRouter } from './routes/signin';
 import { signupRouter } from './routes/signup';
 import { signoutRouter } from './routes/signout';
-import errorHandler from './middleware/errorResponse';
+import { errorHandler } from './middleware/errorResponse';
 import { NotFoundError } from './errors/notFound-error';
 import connectDB from './services/db';
 
