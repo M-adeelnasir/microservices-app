@@ -45,6 +45,7 @@ router.post(
       process.env.JWT_KEY!
     );
 
+    //@ts-ignore
     req.session! = {
       jwt: jwtToken,
     };
