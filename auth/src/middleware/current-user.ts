@@ -29,8 +29,6 @@ export const currentUser = async (
       process.env.JWT_KEY!
     ) as UserPayload;
 
-    console.log(payload);
-
     req.user = payload;
   } catch (err) {
     console.log(err);
