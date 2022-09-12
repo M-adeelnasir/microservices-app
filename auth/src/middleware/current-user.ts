@@ -10,6 +10,7 @@ declare global {
   namespace Express {
     interface Request {
       user?: UserPayload;
+      session?: any;
     }
   }
 }
@@ -32,6 +33,7 @@ export const currentUser = async (
     req.user = payload;
   } catch (err) {
     console.log(err);
+    res.send({ currentuser: null });
   }
   next();
 };
