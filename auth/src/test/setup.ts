@@ -5,8 +5,9 @@ import { app } from '../services/app';
 let mongo: any;
 //@ts-ignore
 beforeAll(async () => {
-  mongo = new MongoMemoryServer();
+  mongo = await MongoMemoryServer.create();
   const uri = mongo.getUri();
+
   await mongoose.connect(uri);
 });
 
