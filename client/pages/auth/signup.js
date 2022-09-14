@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import React, { useState } from 'react'
 import useRequest from '../../hooks/use-request'
+import Router from 'next/router'
 
 const signup = () => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
-    const { doRequest, errors } = useRequest({ method: 'post', url: 'https://auth.dev/api/users/signup', body: { email, password } })
+    const { doRequest, errors } = useRequest({ method: 'post', url: 'https://auth.dev/api/users/signup', body: { email, password }, onSuccess: () => Router.push('/') })
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        doRequest()
+        await doRequest()
     }
 
     return (
@@ -33,5 +33,6 @@ const signup = () => {
         </>
     )
 }
+
 
 export default signup
