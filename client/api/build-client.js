@@ -2,10 +2,14 @@ import axios from 'axios'
 
 export default async ({ req }) => {
     if (typeof window === 'undefined') {
-        const { data } = await axios.create({
+        return axios.create({
             baseURL: 'http://ingress-nginx-controller.ingress-nginx.svc.cluster.local',
             headers: req.headers
         })
-        return data
+    }
+    else {
+        return axios.create({
+            baseURL: "https://auth.dev",
+        })
     }
 }
