@@ -5,7 +5,6 @@ const LandingPage = ({ data }) => {
 
     return (
         <>
-            <h1>Yes</h1>
             {JSON.stringify(data)}
         </>
     )

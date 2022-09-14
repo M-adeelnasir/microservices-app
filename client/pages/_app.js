@@ -1,7 +1,8 @@
 import Head from "next/head";
 import BuildClient from "../api/build-client";
+import Header from "../components/header";
 
-const AppComponent = ({ Component, pageProps }) => {
+const AppComponent = ({ Component, pageProps, currentuser }) => {
     return (<>
 
         <Head>
@@ -10,6 +11,7 @@ const AppComponent = ({ Component, pageProps }) => {
 
         <>
 
+            <Header currentuser={currentuser} />
             <Component {...pageProps} />
         </>
     </>)
@@ -26,7 +28,8 @@ AppComponent.getInitialProps = async (context) => {
     if (context.Component.getInitialProps) {
         pageProps = await context.Component.getInitialProps(context.ctx)
     }
-    return { data, pageProps }
+    console.log({ ...data });
+    return { ...data, pageProps }
 }
 
 export default AppComponent
