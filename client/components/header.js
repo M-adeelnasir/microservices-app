@@ -6,7 +6,7 @@ const Header = ({ currentuser }) => {
     const links = [
         !currentuser && { href: '/auth/signin', lable: "Signin" },
         !currentuser && { href: '/auth/signup', lable: "Signup" },
-        currentuser && { href: '/auth/logout', lable: "logout" }
+        currentuser && { href: '/auth/signout', lable: "logout" }
     ].filter(items => items).map(({ lable, href }) => (
         <Link href={href} className='nav-item' key={href}><a className='nav-link'>{lable}</a></Link>
     ))
