@@ -4,6 +4,6 @@ import { app } from './services/app';
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, async () => {
-  console.log(`Server is listening at port ${PORT}!!`);
+  console.log(`Auth Server is listening at port ${PORT}!!`);
   await connectDB();
 });
