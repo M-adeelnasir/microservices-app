@@ -10,7 +10,7 @@ const connectDB = async () => {
     }
 
     const conn = await mongoose.connect(process.env.MONGO_URI);
-    console.log('DB Connected');
+    console.log('Tickets DB Connected');
   } catch (err) {
     console.log(err);
 
