@@ -5,8 +5,7 @@ import { currentUserRouter } from '../routes/currentUser';
 import { signinRouter } from '../routes/signin';
 import { signupRouter } from '../routes/signup';
 import { signoutRouter } from '../routes/signout';
-import { errorHandler } from './../middleware/errorResponse';
-import { NotFoundError } from './../errors/notFound-error';
+import { errorHandler, NotFoundError } from '@adcommon/common';
 
 const app = express();
 app.use(express.json());

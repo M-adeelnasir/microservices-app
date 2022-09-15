@@ -1,6 +1,5 @@
-import { currentUser } from './../middleware/current-user';
+import { currentUser, requireLogin } from '@adcommon/common';
 import express, { Response, Request } from 'express';
-import { requireLogin } from '../middleware/requireLogin';
 
 const router = express.Router();
 

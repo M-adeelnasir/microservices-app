@@ -1,4 +1,4 @@
-import { currentUser } from './../middleware/current-user';
+import { currentUser } from '@adcommon/common';
 import express, { Request, Response } from 'express';
 const router = express.Router();
 
