@@ -1,6 +1,10 @@
 import express, { Response, Request } from 'express';
 import { body, validationResult } from 'express-validator';
-import { RequestValidationError, ErrorMessage } from '@adcommon/common';
+import {
+  RequestValidationError,
+  ErrorMessage,
+  validateRequest,
+} from '@adcommon/common';
 import User from '../models/user-model';
 import jwt from 'jsonwebtoken';
 
@@ -23,13 +27,9 @@ router.post(
       .isLength({ min: 6 })
       .withMessage('Password is required and must be atleast 6 chars'),
   ],
+  validateRequest,
   async (req: Request, res: Response) => {
     const { email, password } = req.body;
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-      throw new RequestValidationError(errors.array());
-    }
 
     const user = await User.findOne({ email: email });
 
