@@ -4,21 +4,20 @@ import { requireLogin, ErrorMessage } from '@adcommon/common';
 
 const router = express.Router();
 
-router.post(
-  '/api/tickets',
-
+router.get(
+  '/api/tickets/:id',
   requireLogin,
-
   async (req: Request, res: Response) => {
-    const { title, price } = req.body;
+    const { id } = req.params;
 
-    const ticket = await Tickets.create({ title, price });
+    const ticket = await Tickets.findById(id);
+
     if (!ticket) {
-      throw new ErrorMessage('Ticket Create failed');
+      throw new ErrorMessage('No tickets found');
     }
 
-    res.status(201).send(ticket);
+    res.status(200).send(ticket);
   }
 );
 
-export { router as createTickets };
+export { router as getTicket };

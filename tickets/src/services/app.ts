@@ -3,6 +3,7 @@ import 'express-async-errors';
 import cookieSeesion from 'cookie-session';
 import { errorHandler, NotFoundError, currentUser } from '@adcommon/common';
 import { createTickets } from '../routes/createTickets';
+import { getTicket } from '../routes/singleTickets';
 
 const app = express();
 app.use(express.json());
@@ -17,6 +18,7 @@ app.use(
 );
 app.use(currentUser);
 app.use(createTickets);
+app.use(getTicket);
 
 app.get('/api/tickets/health-check', (req, res) => {
   res.sendStatus(200);
