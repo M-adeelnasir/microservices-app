@@ -4,6 +4,7 @@ import cookieSeesion from 'cookie-session';
 import { errorHandler, NotFoundError, currentUser } from '@adcommon/common';
 import { createTickets } from '../routes/createTickets';
 import { getTicket } from '../routes/singleTickets';
+import { updateTicket } from '../routes/updateTicket';
 
 const app = express();
 app.use(express.json());
@@ -17,6 +18,7 @@ app.use(
   })
 );
 app.use(currentUser);
+app.use(updateTicket);
 app.use(createTickets);
 app.use(getTicket);
 
