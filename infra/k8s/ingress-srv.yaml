@@ -13,7 +13,7 @@ spec:
       http:
         paths:
           - pathType: Prefix
-            path: /api/?(.*)
+            path: /api/users/?(.*)
             backend:
               service:
                 name: auth-srv
@@ -24,5 +24,12 @@ spec:
             backend:
               service:
                 name: client-srv
+                port:
+                  number: 3000
+          - pathType: Prefix
+            path: /api/tickets/?(.*)
+            backend:
+              service:
+                name: tickets-srv
                 port:
                   number: 3000
