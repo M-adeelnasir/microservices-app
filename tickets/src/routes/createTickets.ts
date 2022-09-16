@@ -12,7 +12,9 @@ router.post(
   async (req: Request, res: Response) => {
     const { title, price } = req.body;
 
-    const ticket = await Tickets.create({ title, price });
+    const userId = req.user?.id;
+
+    const ticket = await Tickets.create({ title, price, userId });
     if (!ticket) {
       throw new ErrorMessage('Ticket Create failed');
     }
