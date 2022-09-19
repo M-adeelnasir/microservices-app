@@ -2,8 +2,9 @@ import { Subjects } from './subjects';
 export interface TicketCreated {
   subject: Subjects.ticketCreated;
   data: {
-    name: string;
-    maried: boolean;
-    age: number;
+    id: string;
+    title: string;
+    price: number;
+    userId: string;
   };
 }

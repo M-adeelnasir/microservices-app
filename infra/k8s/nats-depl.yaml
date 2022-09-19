@@ -36,6 +36,7 @@ kind: Service
 metadata:
   name: nats-srv
 spec:
+  # type: NodePort
   selector:
     app: nats
   ports:
