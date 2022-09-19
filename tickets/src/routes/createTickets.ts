@@ -21,14 +21,20 @@ router.post(
       throw new ErrorMessage('Ticket Create failed');
     }
 
-    await new TicketCreatedEventPublisher(natsWrapper.client).publish({
-      id: ticket.id,
-      title: ticket.title,
-      price: ticket.price,
-      userId: userId,
-    });
+    //nats streaming
+    try {
+      await new TicketCreatedEventPublisher(natsWrapper.client).publish({
+        id: ticket.id,
+        title: ticket.title,
+        price: ticket.price,
+        userId: userId,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+    console.log('Aded');
 
-    res.status(201).send(ticket);
+    res.status(201).json(ticket);
   }
 );
 
