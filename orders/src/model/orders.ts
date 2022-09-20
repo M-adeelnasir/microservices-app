@@ -1,12 +1,17 @@
 import mongoose from 'mongoose';
+import { TicketDoc } from './tickets';
 
-interface OrdersDocument extends mongoose.Document {}
+interface OrdersDocument extends mongoose.Document {
+  userId: string;
+  status: string;
+  expiresAt: Date;
+  ticketId: TicketDoc;
+}
 
 const ordersSchema = new mongoose.Schema(
   {
     userId: {
-      type: mongoose.Types.ObjectId,
-      ref: 'User',
+      type: String,
       required: true,
     },
     status: {
