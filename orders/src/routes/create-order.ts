@@ -33,23 +33,27 @@ router.post(
       throw new NotFoundError();
     }
 
-    //make sure the ticket is not already reserved
-    const order = await Order.findOne({
-      ticketId: ticketId,
-      status: {
-        $in: [
-          OrderStatus.Created,
-          OrderStatus.AwaitingPaymnet,
-          OrderStatus.Complete,
-        ],
-      },
-    });
+    const isReserved = await ticket.isReserved();
 
-    if (!order) {
+    //make sure the ticket is not already reserved
+
+    if (isReserved) {
       throw new ErrorMessage('Ticket is already reserved');
     }
 
-    const expiration = res.send({});
+    //set expiration time
+    let expiration = new Date();
+    expiration.setSeconds(expiration.getSeconds() + 15 * 60);
+
+    const newOrder = await Order.create({
+      userId: req.user!.id,
+      status: OrderStatus.Created,
+      expiresAt: expiration,
+      ticketId,
+    });
+    console.log(newOrder);
+
+    res.status(201).send(newOrder);
   }
 );
 
