@@ -5,7 +5,7 @@ import { Order } from '../model/orders';
 const router = express.Router();
 
 router.get('api/orders/:id', async (req: Request, res: Response) => {
-  const order = await Order.findById(req.params.id);
+  const order = await Order.findById(req.params.id).populate('ticketId');
 
   if (!order) {
     throw new NotFoundError();
