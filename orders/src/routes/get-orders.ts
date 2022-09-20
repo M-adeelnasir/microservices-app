@@ -8,7 +8,7 @@ router.get('api/orders', async (req: Request, res: Response) => {
     'ticketId'
   );
 
-  res.send({ orders });
+  res.send(orders);
 });
 
 export { router as ordersGetRoute };
