@@ -1,4 +1,6 @@
 import { natsWrapper } from './stanWrapper';
+import { TicketCreateEvent } from '../listeners/ticket-create-event';
+import { TicketUpdateEvent } from '../listeners/ticket-update-event';
 
 export const natsConnect = async () => {
   try {
@@ -24,6 +26,9 @@ export const natsConnect = async () => {
       console.log('Nats connection closed');
       process.exit();
     });
+
+    new TicketCreateEvent(natsWrapper.client).listen();
+    new TicketUpdateEvent(natsWrapper.client).listen();
 
     process.on('SIGINT', () => natsWrapper.client.close());
     process.on('SIGTERM', () => natsWrapper.client.close());

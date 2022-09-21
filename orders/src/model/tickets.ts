@@ -4,6 +4,7 @@ import { Order } from './orders';
 
 export interface TicketDoc extends mongoose.Document {
   title: string;
+  _id: string;
   price: number;
   isReserved(): Promise<boolean>;
 }
