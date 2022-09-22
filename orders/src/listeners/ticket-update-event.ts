@@ -7,18 +7,17 @@ export class TicketUpdateEvent extends Lintener<TicketUpdatedCheck> {
   subject: Subjects.ticketUpdated = Subjects.ticketUpdated;
   queueGroupName = QueueGroups.queueGroupName;
   async OnMessage(data: TicketUpdatedCheck['data'], msg: Message) {
-    const { id, price, title } = data;
+    const { id, price, title, version } = data;
 
-    const ticket = await Ticket.findByIdAndUpdate(
-      { _id: id },
-      { price, title },
-      { new: true }
-    );
+    const ticket = await Ticket.findOne({ _id: id, version: version - 1 });
 
     if (!ticket) {
       throw new Error('Invalid Ticket Id');
     }
 
+    ticket.set({ price, title });
+
+    ticket.save();
     msg.ack();
   }
 }

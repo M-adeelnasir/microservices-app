@@ -1,11 +1,13 @@
 import mongoose from 'mongoose';
 import { OrderStatus } from '@adcommon/common';
 import { Order } from './orders';
+import { updateIfCurrentPlugin } from 'mongoose-update-if-current';
 
 export interface TicketDoc extends mongoose.Document {
   title: string;
   _id: string;
   price: number;
+  version: number;
   isReserved(): Promise<boolean>;
 }
 
@@ -26,10 +28,14 @@ const ticketSchema = new mongoose.Schema(
       transform(doc, ret) {
         ret.id = ret._id;
         delete ret._id;
+        delete ret.__v;
       },
     },
   }
 );
+
+ticketSchema.set('versionKey', 'version');
+ticketSchema.plugin(updateIfCurrentPlugin);
 
 ticketSchema.methods.isReserved = async function () {
   const order = await Order.findOne({

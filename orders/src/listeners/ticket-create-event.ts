@@ -8,7 +8,8 @@ export class TicketCreateEvent extends Lintener<TicketCreatedCheck> {
   queueGroupName = QueueGroups.queueGroupName;
   async OnMessage(data: TicketCreatedCheck['data'], msg: Message) {
     const { id, title, price } = data;
-    await Ticket.create({ _id: id, title, price });
+    const ticket = await Ticket.create({ _id: id, title, price });
+    console.log(ticket);
 
     msg.ack();
   }

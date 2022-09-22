@@ -28,11 +28,13 @@ router.post(
         title: ticket.title,
         price: ticket.price,
         userId: userId,
+        version: ticket.version as number,
       });
     } catch (err) {
       console.log(err);
     }
-    console.log('Aded');
+
+    console.log('created ticket ===>', ticket);
 
     res.status(201).json(ticket);
   }

@@ -21,28 +21,29 @@ router.put(
       throw new ErrorMessage('You are not authorized');
     }
 
-    const updateTicket = await Tickets.findByIdAndUpdate(
-      { _id: id },
-      { title, price },
-      { new: true }
-    );
-
-    if (!updateTicket) {
+    if (!ticket) {
       throw new ErrorMessage('update ticket failed');
     }
 
+    ticket.set({ title, price });
+
+    await ticket.save();
+
     try {
       await new TicketUpdatedEventPublisher(natsWrapper.client).publish({
-        id: updateTicket.id,
-        title: updateTicket.title,
-        price: updateTicket.price,
+        id: ticket.id,
+        title: ticket.title,
+        price: ticket.price,
         userId: userId,
+        version: ticket.version as number,
       });
     } catch (err) {
       console.log(err);
     }
 
-    res.status(200).send(updateTicket);
+    console.log('updated ticket====>', ticket);
+
+    res.status(200).send(ticket);
   }
 );
 

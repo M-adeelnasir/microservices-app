@@ -4,7 +4,7 @@ import { updateIfCurrentPlugin } from 'mongoose-update-if-current';
 interface TicketsDocument extends mongoose.Document {
   title: string;
   price: number;
-  version?: string;
+  version?: number;
 }
 
 const ticketsSchema = new mongoose.Schema(
@@ -36,6 +36,12 @@ const ticketsSchema = new mongoose.Schema(
 
 ticketsSchema.set('versionKey', 'version');
 ticketsSchema.plugin(updateIfCurrentPlugin);
+
+// ticketsSchema.pre('save', aync function (done) {
+//   this.$where= {
+
+//   }
+// })
 
 const Tickets = mongoose.model<TicketsDocument>('Tickets', ticketsSchema);
 
