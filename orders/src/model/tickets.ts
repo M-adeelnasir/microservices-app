@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import { OrderStatus } from '@adcommon/common';
 import { Order } from './orders';
 import { updateIfCurrentPlugin } from 'mongoose-update-if-current';
+import { doesNotMatch } from 'assert';
 
 export interface TicketDoc extends mongoose.Document {
   title: string;
@@ -35,7 +36,16 @@ const ticketSchema = new mongoose.Schema(
 );
 
 ticketSchema.set('versionKey', 'version');
+
 ticketSchema.plugin(updateIfCurrentPlugin);
+
+//OR
+// ticketSchema.pre('save', function (done) {
+//   this.$where = {
+//     version: this.get('version') - 1,
+//   };
+//   done();
+// });
 
 ticketSchema.methods.isReserved = async function () {
   const order = await Order.findOne({

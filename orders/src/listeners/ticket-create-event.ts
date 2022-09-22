@@ -9,7 +9,6 @@ export class TicketCreateEvent extends Lintener<TicketCreatedCheck> {
   async OnMessage(data: TicketCreatedCheck['data'], msg: Message) {
     const { id, title, price } = data;
     const ticket = await Ticket.create({ _id: id, title, price });
-    console.log(ticket);
 
     msg.ack();
   }

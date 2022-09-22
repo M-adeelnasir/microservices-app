@@ -1,12 +1,14 @@
 import mongoose from 'mongoose';
 import { TicketDoc } from './tickets';
 import { OrderStatus } from '@adcommon/common';
+import { updateIfCurrentPlugin } from 'mongoose-update-if-current';
 
 interface OrdersDocument extends mongoose.Document {
   userId: string;
   status: OrderStatus;
   expiresAt: Date;
   ticketId: TicketDoc;
+  version: number;
 }
 
 const ordersSchema = new mongoose.Schema(
@@ -41,6 +43,9 @@ const ordersSchema = new mongoose.Schema(
     },
   }
 );
+
+ordersSchema.set('versionKey', 'version');
+ordersSchema.plugin(updateIfCurrentPlugin);
 
 const Order = mongoose.model<OrdersDocument>('Orders', ordersSchema);
 
