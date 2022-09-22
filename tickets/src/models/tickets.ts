@@ -1,8 +1,10 @@
 import mongoose from 'mongoose';
+import { updateIfCurrentPlugin } from 'mongoose-update-if-current';
 
 interface TicketsDocument extends mongoose.Document {
   title: string;
   price: number;
+  version?: string;
 }
 
 const ticketsSchema = new mongoose.Schema(
@@ -26,11 +28,14 @@ const ticketsSchema = new mongoose.Schema(
       transform(doc, ret) {
         ret.id = ret._id;
         delete ret._id;
-        delete ret.__v;
+        // delete ret.__v;
       },
     },
   }
 );
+
+ticketsSchema.set('versionKey', 'version');
+ticketsSchema.plugin(updateIfCurrentPlugin);
 
 const Tickets = mongoose.model<TicketsDocument>('Tickets', ticketsSchema);
 
