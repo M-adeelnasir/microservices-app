@@ -1,32 +1,31 @@
-import { Lintener, OrderCreated, Subjects } from '@adcommon/common';
 import { Message } from 'node-nats-streaming';
 import { QueueGroup } from './quere-group-name';
+import { Lintener, OrderCancelled, Subjects } from '@adcommon/common';
 import { Tickets } from '../models/tickets';
 import { TicketUpdatedEventPublisher } from '../events/ticket-event';
 
-export class OrderCreatedListener extends Lintener<OrderCreated> {
-  subject: Subjects.orderCreated = Subjects.orderCreated;
+export class TicketCancelledListener extends Lintener<OrderCancelled> {
+  subject: Subjects.orderCancelled = Subjects.orderCancelled;
   queueGroupName = QueueGroup.queueGroupName;
-  async OnMessage(data: OrderCreated['data'], msg: Message) {
+  async OnMessage(data: OrderCancelled['data'], msg: Message) {
     const ticket = await Tickets.findById({ _id: data.ticketId.id });
 
     if (!ticket) {
-      throw new Error('Ticket not found');
+      throw new Error('Invalid request');
     }
 
-    ticket.set({ orderId: data.id });
+    ticket.set({ orderId: undefined });
 
-    ticket.save();
+    const { id, title, version, price, userId, orderId } = ticket;
 
-    const { id, price, title, userId, version } = ticket;
-
+    await ticket.save();
     await new TicketUpdatedEventPublisher(this.client).publish({
       id,
       title,
       version,
       price,
       userId,
-      orderId: data.id,
+      orderId,
     });
 
     msg.ack();
