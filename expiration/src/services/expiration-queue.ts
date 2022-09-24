@@ -1,4 +1,6 @@
 import Queue from 'bull';
+import { natsWrapper } from './stanWrapper';
+import { OrderExpiredPublisher } from '../publisher/order-expired-publisher';
 
 interface Payload {
   orderId: string;
@@ -14,6 +16,12 @@ expirationQueue.process(async (job) => {
   console.log(
     `${job.data.orderId} should be expired now because ute time is over now`
   );
+
+  try {
+    new OrderExpiredPublisher(natsWrapper.client).publish({
+      orderId: job.data.orderId,
+    });
+  } catch (err) {}
 });
 
 export { expirationQueue };
