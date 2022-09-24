@@ -45,7 +45,7 @@ router.post(
 
     //set expiration time
     let expiration = new Date();
-    expiration.setSeconds(expiration.getSeconds() + 15 * 60);
+    expiration.setSeconds(expiration.getSeconds() + 1 * 60);
 
     const newOrder = await Order.create({
       userId: req.user!.id,
