@@ -16,6 +16,12 @@ router.put(
 
     const ticket = await Tickets.findById(id);
 
+    if (ticket!.orderId) {
+      throw new ErrorMessage(
+        'Ticket is reseverd you are not allowed to edit it for now!'
+      );
+    }
+
     //   @ts-ignore
     if (userId !== ticket.userId.toString()) {
       throw new ErrorMessage('You are not authorized');
