@@ -12,7 +12,7 @@ spec:
         app: orders
     spec:
       containers:
-        - name: tickets
+        - name: orders
           image: raoadeelnasir/orders
           env:
             - name: MONGO_URI

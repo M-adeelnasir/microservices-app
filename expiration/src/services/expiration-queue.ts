@@ -10,7 +10,7 @@ const expirationQueue = new Queue<Payload>('order:expiration', {
   },
 });
 
-expirationQueue.process(async (job, done) => {
+expirationQueue.process(async (job) => {
   console.log(
     `${job.data.orderId} should be expired now because ute time is over now`
   );

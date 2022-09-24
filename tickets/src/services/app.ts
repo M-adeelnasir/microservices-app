@@ -3,7 +3,6 @@ import 'express-async-errors';
 import cookieSeesion from 'cookie-session';
 import { errorHandler, NotFoundError, currentUser } from '@adcommon/common';
 import { createTickets } from '../routes/createTickets';
-import { getTicket } from '../routes/singleTickets';
 import { updateTicket } from '../routes/updateTicket';
 import { Tickets } from '../models/tickets';
 
@@ -20,7 +19,7 @@ app.use(
 );
 app.use(currentUser);
 app.use(updateTicket);
-// app.use(createTickets);
+app.use(createTickets);
 // app.use(getTicket);
 
 app.get('/api/tickets/health-check', async (req, res) => {

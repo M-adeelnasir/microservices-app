@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: tickets-depl
+  name: expiration-depl
 spec:
   selector:
     matchLabels:
-      app: tickets
+      app: expiration
   template:
     metadata:
       labels:
-        app: tickets
+        app: expiration
     spec:
       containers:
-        - name: tickets
+        - name: expiration
           image: raoadeelnasir/expiration
           env:
             - name: NATS_CLUSTER_ID
