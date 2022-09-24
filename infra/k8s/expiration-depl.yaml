@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tickets-depl
+spec:
+  selector:
+    matchLabels:
+      app: tickets
+  template:
+    metadata:
+      labels:
+        app: tickets
+    spec:
+      containers:
+        - name: tickets
+          image: raoadeelnasir/expiration
+          env:
+            - name: NATS_CLUSTER_ID
+              value: auth
+            - name: REDIS_HOST_NAME
+              value: expiration-redis-srv
+            - name: NATS_URL
+              value: 'http://nats-srv:4222'
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
