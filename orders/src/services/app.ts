@@ -6,7 +6,7 @@ import { ordersCreateRoute } from '../routes/create-order';
 import { orderGetRoute } from '../routes/get-order';
 import { orderCancelRoute } from '../routes/cancel-order';
 import { ordersGetRoute } from '../routes/get-orders';
-
+import { Ticket } from '../model/tickets';
 const app = express();
 app.use(express.json());
 
@@ -20,13 +20,15 @@ app.use(
 );
 app.use(currentUser);
 
-app.use(orderCancelRoute);
-app.use(orderGetRoute);
 app.use(ordersCreateRoute);
-app.use(ordersGetRoute);
+app.use(orderCancelRoute);
+// app.use(orderGetRoute);
+// app.use(ordersGetRoute);
 
-app.get('/api/orders/health-check', (req, res) => {
-  res.sendStatus(200);
+app.get('/api/orders/health-check', async (req, res) => {
+  const ticktes = await Ticket.find({});
+
+  res.send(ticktes);
 });
 
 app.all('*', async (req, res) => {

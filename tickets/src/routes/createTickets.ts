@@ -34,8 +34,6 @@ router.post(
       console.log(err);
     }
 
-    console.log('created ticket ===>', ticket);
-
     res.status(201).json(ticket);
   }
 );

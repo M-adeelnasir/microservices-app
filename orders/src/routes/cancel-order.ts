@@ -11,7 +11,7 @@ import { natsWrapper } from '../services/stanWrapper';
 
 const router = express.Router();
 
-router.delete('api/orders/:id', async (req: Request, res: Response) => {
+router.delete('/api/orders/:id', async (req: Request, res: Response) => {
   const order = await Order.findById(req.params.id).populate('ticketId');
 
   if (!order) {

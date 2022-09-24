@@ -16,7 +16,7 @@ import { OrderCreatedPublisher } from '../publisher/order-created';
 const router = express.Router();
 
 router.post(
-  'api/orders/create',
+  '/api/orders/create',
   requireLogin,
   [
     body('ticketId')
@@ -55,6 +55,8 @@ router.post(
     });
 
     try {
+      console.log('ordercreate publisheing');
+
       await new OrderCreatedPublisher(natsWrapper.client).publish({
         id: newOrder.id,
         userId: newOrder.id,
@@ -65,11 +67,13 @@ router.post(
           price: ticket.price,
         },
       });
+
+      console.log('ticket_1====>');
     } catch (err) {
       console.log(err);
     }
 
-    console.log(newOrder);
+    console.log('new order====>', newOrder);
 
     res.status(201).send(newOrder);
   }

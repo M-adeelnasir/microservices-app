@@ -30,13 +30,16 @@ router.put(
     await ticket.save();
 
     try {
-      await new TicketUpdatedEventPublisher(natsWrapper.client).publish({
+      const ticket_1 = await new TicketUpdatedEventPublisher(
+        natsWrapper.client
+      ).publish({
         id: ticket.id,
         title: ticket.title,
         price: ticket.price,
         userId: userId,
         version: ticket.version as number,
       });
+      console.log('ticket_1===>', ticket_1);
     } catch (err) {
       console.log(err);
     }
