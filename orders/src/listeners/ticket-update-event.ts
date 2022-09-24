@@ -11,14 +11,9 @@ export class TicketUpdateEvent extends Lintener<TicketUpdatedCheck> {
 
     const { id, price, title, version } = data;
 
-    console.log(
-      'VERSION========================================================>',
-      version
-    );
-
     const ticket = await Ticket.findOne({ _id: id, version: version - 1 });
 
-    console.log('CHECK____>', ticket);
+    // console.log('CHECK____>', ticket);
 
     if (!ticket) {
       throw new Error('Invalid Ticket Id');
@@ -28,7 +23,7 @@ export class TicketUpdateEvent extends Lintener<TicketUpdatedCheck> {
 
     ticket.save();
 
-    console.log('UPADTED TICKET===>', ticket);
+    // console.log('UPADTED TICKET===>', ticket);
 
     msg.ack();
   }

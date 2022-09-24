@@ -55,8 +55,6 @@ router.post(
     });
 
     try {
-      console.log('ordercreate publisheing');
-
       await new OrderCreatedPublisher(natsWrapper.client).publish({
         id: newOrder.id,
         userId: newOrder.id,
@@ -68,12 +66,12 @@ router.post(
         },
       });
 
-      console.log('ticket_1====>');
+      // console.log('ticket_1====>');
     } catch (err) {
       console.log(err);
     }
 
-    console.log('new order====>', newOrder);
+    // console.log('new order====>', newOrder);
 
     res.status(201).send(newOrder);
   }

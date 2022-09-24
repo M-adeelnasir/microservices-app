@@ -8,11 +8,11 @@ export class OrderCreatedListener extends Lintener<OrderCreated> {
   subject: Subjects.orderCreated = Subjects.orderCreated;
   queueGroupName = QueueGroup.queueGroupName;
   async OnMessage(data: OrderCreated['data'], msg: Message) {
-    console.log('DATA_1=====>', data);
+    // console.log('DATA_1=====>', data);
 
     const ticket = await Tickets.findById({ _id: data.ticketId.id });
 
-    console.log('DATA_2 TICKET FOUND', ticket);
+    // console.log('DATA_2 TICKET FOUND', ticket);
 
     if (!ticket) {
       throw new Error('Ticket not found');
@@ -22,13 +22,11 @@ export class OrderCreatedListener extends Lintener<OrderCreated> {
 
     ticket.save();
 
-    console.log('CHECK THE TICKET', ticket);
+    // console.log('CHECK THE TICKET', ticket);
 
     const { id, price, title, userId, version } = ticket;
 
     try {
-      console.log('no word');
-
       await new TicketUpdatedEventPublisher(this.client).publish({
         id,
         title,
@@ -37,8 +35,6 @@ export class OrderCreatedListener extends Lintener<OrderCreated> {
         userId,
         orderId: data.id,
       });
-
-      console.log('yes word');
     } catch (err) {
       console.log(err);
     }
