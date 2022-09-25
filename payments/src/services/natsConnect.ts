@@ -1,4 +1,5 @@
 import { natsWrapper } from './stanWrapper';
+import { OrderCreatedPaymentListener } from '../events/listener/order-created-listener';
 
 export const natsConnect = async () => {
   try {
@@ -19,6 +20,8 @@ export const natsConnect = async () => {
       process.env.NATS_CLIENT_ID,
       process.env.NATS_URL
     );
+
+    new OrderCreatedPaymentListener(natsWrapper.client).listen();
 
     natsWrapper.client.on('close', () => {
       console.log('Nats connection closed');
