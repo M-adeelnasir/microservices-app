@@ -1,32 +1,36 @@
+import { Lintener, OrderCancelled, Subjects } from '@adcommon/common';
 import { Message } from 'node-nats-streaming';
 import { QueueGroup } from './quere-group-name';
-import { Lintener, OrderCancelled, Subjects } from '@adcommon/common';
 import { Tickets } from '../models/tickets';
 import { TicketUpdatedEventPublisher } from '../events/ticket-event';
 
-export class TicketCancelledListener extends Lintener<OrderCancelled> {
+export class OrderCancelledEventListener extends Lintener<OrderCancelled> {
   subject: Subjects.orderCancelled = Subjects.orderCancelled;
   queueGroupName = QueueGroup.queueGroupName;
   async OnMessage(data: OrderCancelled['data'], msg: Message) {
     const ticket = await Tickets.findById({ _id: data.ticketId.id });
 
     if (!ticket) {
-      throw new Error('Invalid request');
+      throw new Error('Invalid Ticket id');
     }
 
     ticket.set({ orderId: undefined });
+    ticket.save();
 
-    const { id, title, version, price, userId, orderId } = ticket;
+    console.log('TICKET IS----->', ticket);
 
-    await ticket.save();
-    await new TicketUpdatedEventPublisher(this.client).publish({
-      id,
-      title,
-      version,
-      price,
-      userId,
-      orderId,
-    });
+    try {
+      await new TicketUpdatedEventPublisher(this.client).publish({
+        id: ticket.id,
+        orderId: ticket.orderId,
+        title: ticket.title,
+        price: ticket.price,
+        version: ticket.version + 1,
+        userId: ticket.userId,
+      });
+    } catch (err) {
+      console.log('ERROR Can====>');
+    }
 
     msg.ack();
   }

@@ -18,10 +18,12 @@ expirationQueue.process(async (job) => {
   );
 
   try {
-    new OrderExpiredPublisher(natsWrapper.client).publish({
+    await new OrderExpiredPublisher(natsWrapper.client).publish({
       orderId: job.data.orderId,
     });
-  } catch (err) {}
+  } catch (err) {
+    console.log('ROOOR====>', err);
+  }
 });
 
 export { expirationQueue };

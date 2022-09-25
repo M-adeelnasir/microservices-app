@@ -7,7 +7,7 @@ export class TicketUpdateEvent extends Lintener<TicketUpdatedCheck> {
   subject: Subjects.ticketUpdated = Subjects.ticketUpdated;
   queueGroupName = QueueGroups.queueGroupName;
   async OnMessage(data: TicketUpdatedCheck['data'], msg: Message) {
-    console.log(data);
+    console.log('DATA', data);
 
     const { id, price, title, version } = data;
 

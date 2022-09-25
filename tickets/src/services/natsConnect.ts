@@ -1,5 +1,5 @@
 import { natsWrapper } from './stanWrapper';
-import { TicketCancelledListener } from '../listeners/order-cancelled-listener';
+import { OrderCancelledEventListener } from '../listeners/order-cancelled-listener';
 import { OrderCreatedListener } from '../listeners/order-created-listener';
 
 export const natsConnect = async () => {
@@ -23,7 +23,7 @@ export const natsConnect = async () => {
     );
 
     new OrderCreatedListener(natsWrapper.client).listen();
-    new TicketCancelledListener(natsWrapper.client).listen();
+    new OrderCancelledEventListener(natsWrapper.client).listen();
 
     natsWrapper.client.on('close', () => {
       console.log('Nats connection closed');
