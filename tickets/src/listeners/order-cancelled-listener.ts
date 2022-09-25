@@ -17,8 +17,6 @@ export class OrderCancelledEventListener extends Lintener<OrderCancelled> {
     ticket.set({ orderId: undefined });
     ticket.save();
 
-    console.log('TICKET IS----->', ticket);
-
     try {
       await new TicketUpdatedEventPublisher(this.client).publish({
         id: ticket.id,
@@ -28,9 +26,7 @@ export class OrderCancelledEventListener extends Lintener<OrderCancelled> {
         version: ticket.version + 1,
         userId: ticket.userId,
       });
-    } catch (err) {
-      console.log('ERROR Can====>');
-    }
+    } catch (err) {}
 
     msg.ack();
   }

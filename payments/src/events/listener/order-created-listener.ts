@@ -13,7 +13,7 @@ export class OrderCreatedPaymentListener extends Lintener<OrderCreated> {
   queueGroupName = QueueGroup.queueGroupName;
   async OnMessage(data: OrderCreated['data'], msg: Message) {
     const order = await Order.create({
-      orderId: data.id,
+      _id: data.id,
       price: data.ticketId.price,
       status: data.status,
       userId: data.userId,
